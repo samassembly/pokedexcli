@@ -24,22 +24,15 @@ func TestCleanInput(t *testing.T) {
 	}
 	for _, c := range cases {
 		actual := cleanInput(c.input)
-		// Check the length of the actual slice against the expected slice
 		if len(actual) != len(c.expected) {
-			// if they don't match, use t.Errorf to print an error message
-			t.Errorf("Failure: Unexpected result length")
-			// and fail the test
-			t.Fail()
+			t.Errorf("lengths don't match: '%v' vs '%v'", actual, c.expected)
+			continue
 		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
-			// Check each word in the slice
 			if word != expectedWord {
-			// if they don't match, use t.Errorf to print an error message
-			t.Errorf("Failure: Generated output does not match expected output")
-			// and fail the test
-			t.Fail()
+				t.Errorf("cleanInput(%v) == %v, expected %v", c.input, actual, c.expected)
 			}
 		}
 	}
