@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 	"github.com/samassembly/pokedexcli/internal/pokeapi"
+	"github.com/samassembly/pokedexcli/internal/pokecache"
 )
 
 type config struct {
@@ -15,6 +17,9 @@ type config struct {
 }
 
 func startRepl(cfg *config) {
+	interval := 5 * time.Second
+	cache := pokecache.NewCache(interval)
+
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -29,7 +34,7 @@ func startRepl(cfg *config) {
 
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback(cfg)
+			err := command.callback(cfg, cache)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -50,7 +55,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, *cache) error
 }
 
 func getCommands() map[string]cliCommand {

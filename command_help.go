@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/samassembly/pokedexcli/internal/pokecache"
+)
 
 //prints available commands and a description
-func commandHelp(cfg *config) error {
+func commandHelp(cfg *config, cache *pokecache.cache) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
