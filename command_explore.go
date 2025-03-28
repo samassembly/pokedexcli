@@ -6,9 +6,9 @@ import (
 )
 //test and production signatures
 //func commandExplore(cfg *config, location string) error {
-func commandExplore(cfg *config) error {
+func commandExplore(cfg *config, location string) error {
 	//test line
-	location := "pastoria-city-area"
+	//location := "pastoria-city-area"
 	exploreResp, err := cfg.pokeapiClient.ExploreLocation(location)
 	if err != nil {
 		return err

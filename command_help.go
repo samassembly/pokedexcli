@@ -5,7 +5,7 @@ import (
 )
 
 //prints available commands and a description
-func commandHelp(cfg *config) error {
+func commandHelp(cfg *config, inp string) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
