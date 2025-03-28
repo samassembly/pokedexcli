@@ -5,21 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
+
 	"github.com/samassembly/pokedexcli/internal/pokeapi"
-	"github.com/samassembly/pokedexcli/internal/pokecache"
 )
 
 type config struct {
-	pokeapiClient	pokeapi.Client
+	pokeapiClient    pokeapi.Client
 	nextLocationsURL *string
 	prevLocationsURL *string
 }
 
 func startRepl(cfg *config) {
-	interval := 5 * time.Second
-	cache := pokecache.NewCache(interval)
-
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -34,7 +30,7 @@ func startRepl(cfg *config) {
 
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback(cfg, cache)
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -55,7 +51,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, *cache) error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -65,20 +61,20 @@ func getCommands() map[string]cliCommand {
 			description: "Displays a help message",
 			callback:    commandHelp,
 		},
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
-		},
 		"map": {
 			name:        "map",
-			description: "Display the next pokemon locations",
+			description: "Get the next page of locations",
 			callback:    commandMapf,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "Display the previous page of locations",
+			description: "Get the previous page of locations",
 			callback:    commandMapb,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
 		},
 	}
 }
