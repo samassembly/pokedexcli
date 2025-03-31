@@ -59,6 +59,14 @@ type cliCommand struct {
 	callback    func(*config, string) error
 }
 
+func commandPokedex(cfg *config, inp string) error {
+	fmt.Println("Your Pokedex:")
+	for _, Pok := range cfg.caughtPokemon {
+		fmt.Printf(" - %s\n", Pok.Name)
+	}
+	return nil
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
@@ -90,6 +98,11 @@ func getCommands() map[string]cliCommand {
 			name: 		 "inspect",
 			description: "Inspect details for a caught pokemon",
 			callback:    commandInspect,
+		},
+		"pokedex": {
+			name: 		 "pokedex",
+			description: "Prints list of all caught pokemon",
+			callback:    commandPokedex,
 		},
 		"exit": {
 			name:        "exit",
