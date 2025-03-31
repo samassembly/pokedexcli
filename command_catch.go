@@ -26,11 +26,12 @@ func commandCatch(cfg *config, pokemon string) error {
 	}
 	caught := attemptCatch(catchrate)
 
-	fmt.Println("Throwing a ball at", pokemon)
+	fmt.Printf("Throwing a Pokeball at %s...", pokemon)
 	fmt.Println("Shake, shake...")
 	if caught {
 		fmt.Println(pokemon, "was caught!")
 		fmt.Println("Adding to Pokedex...")
+		cfg.caughtPokemon[pokemon] = pokeResp
 	} else {
 		fmt.Println(pokemon, "escaped!")
 	}
